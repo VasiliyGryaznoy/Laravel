@@ -15,4 +15,5 @@ require('laravel-elixir-angular');
 
 elixir(function(mix) {
     mix.angular('resources/admin-app/', 'public/admin-app/', 'app.js');
+    mix.scripts(['*.js'], 'public/admin-app/libs.js', 'resources/admin-js-libs');
 });

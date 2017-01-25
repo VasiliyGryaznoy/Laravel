@@ -8,3 +8,4 @@ Homestead.yaml
 access.log
 error.log
 npm-debug.log
+public/admin-app

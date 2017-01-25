@@ -39,9 +39,17 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+    <!--Angular-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.min.js"></script>
+    <script src="<% url('admin-app/libs.js') %>"></script>
+    <script src="<% url('admin-app/app.js') %>"></script>
+
 </head>
 
-<body>
+<body ng-app="adminApp">
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -61,10 +69,10 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a ui-sref="dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
+                            <a ui-sref="users"><i class="fa fa-group"></i> Users</a>
                         </li>
 
                     </ul>
@@ -75,16 +83,7 @@
         </nav>
 
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
-                </div>
-            </div>
-
-            <div class="row">
-                Test
-            </div>
-            
+            <div ui-view></div>
         </div>
     </div>
 </body>
