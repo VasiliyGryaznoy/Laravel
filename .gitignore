@@ -7,3 +7,4 @@ Homestead.yaml
 .env
 access.log
 error.log
+npm-debug.log
