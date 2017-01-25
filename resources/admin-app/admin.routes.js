@@ -3,15 +3,16 @@
 
     angular
         .module('adminApp')
-        .config(function(stateHelperProvider, $urlRouterProvider) {
-            $urlRouterProvider.otherwise('/dashboard');
-//        $locationProvider.html5Mode({
-//            enabled: true,
-//            requireBase: false,
-//            hashPrefix: ""
-//        });
-
+        .config(function(stateHelperProvider, $urlRouterProvider, $authProvider) {
+        $authProvider.loginUrl = '/api/authenticate';
             stateHelperProvider
+                .state({
+                    name: 'login',
+                    url: '/login',
+                    templateUrl: '../views/admin/auth.html',
+                    controller: 'AuthCtrl',
+                    controllerAs: 'vm',
+                })
                 .state({
                     name: 'dashboard',
                     url: '/dashboard',
@@ -26,5 +27,6 @@
                     controller: 'UsersCtrl',
                     controllerAs: 'vm'
                 });
+            $urlRouterProvider.otherwise('/login');
         });
 })();

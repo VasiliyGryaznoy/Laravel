@@ -5,5 +5,6 @@
         'ui.router',
         'ui.router.stateHelper',
         'ngResource',
+        'satellizer'
     ]);
 })();

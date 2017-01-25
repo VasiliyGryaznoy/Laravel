@@ -29,4 +29,15 @@ class AuthController extends Controller
         // all good so return the token
         return response()->json(compact('token'));
     }
+    
+    public function getLogin()
+    {
+        return view('admin.login');
+    }
+    
+    public function postLogin(Request $request)
+    {
+        var_dump($request->all());
+        die();
+    }
 }
