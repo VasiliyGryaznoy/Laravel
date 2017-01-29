@@ -5,9 +5,19 @@
         .module('adminApp')
         .controller('SignupCtrl', SignupCtrl);
 
-    SignupCtrl.$inject = ['$auth', '$state'];
+    SignupCtrl.$inject = [
+        '$auth',
+        '$state',
+        '$scope',
+        '$validation'
+    ];
 
-    function SignupCtrl($auth, $state) {
+    function SignupCtrl(
+        $auth,
+        $state,
+        $scope,
+        $validation
+    ) {
         var vm = this;
 
         vm.credentials = {
@@ -17,6 +27,7 @@
         };
 
         vm.signup = signup;
+        vm.validateSignup = validateSignup;
         
         function signup() {
             $auth.signup(vm.credentials).then(function(result) {
@@ -27,7 +38,13 @@
                         $state.go('dashboard', {});
                     });
                 }
+            }).catch(function(err){
+                console.log(err);
             });
+        }
+
+        function validateSignup(signupForm){
+            return $validation.checkValid($scope[signupForm]);
         }
     }
 })();
