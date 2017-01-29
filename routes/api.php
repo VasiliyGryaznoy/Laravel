@@ -19,7 +19,7 @@ Route::post('logout', 'Api\AuthController@logout');
 Route::post('signup', 'Api\AuthController@signup');
 
 Route::group(['middleware' => 'jwt.auth'], function(){
-    Route::get('users', 'Api\UsersController@users');
+    Route::resource('users', 'Api\UsersController', ['only' => ['index']]);
 });
 
 //Route::get('/user', function (Request $request) {

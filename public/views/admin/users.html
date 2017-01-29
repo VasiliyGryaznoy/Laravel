@@ -5,5 +5,14 @@
 </div>
 
 <div class="row">
-
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+        </tr>
+        <tr ng-repeat="user in vm.users">
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+        </tr>
+    </table>
 </div>
