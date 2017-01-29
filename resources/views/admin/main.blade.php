@@ -52,9 +52,8 @@
 
 <body ng-app="adminApp">
     <div id="wrapper">
-
         <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-if="showNavigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -62,10 +61,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+                <a class="navbar-brand" ui-sref="dashboard">SB Admin v2.0</a>
             </div>
             <!-- /.navbar-header -->
-
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
@@ -83,10 +81,17 @@
             <!-- /.navbar-static-side -->
         </nav>
 
-        <div id="page-wrapper">
+        <div id="page-wrapper" ng-class="{'hide-navigation': !showNavigation}">
             <div ui-view></div>
         </div>
     </div>
 </body>
 
 </html>
+
+<style>
+    /* Very bad practice! Don't do so! */
+    .hide-navigation {
+        margin: 0 !important;
+    }
+</style>

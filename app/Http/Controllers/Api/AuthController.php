@@ -30,14 +30,15 @@ class AuthController extends Controller
         return response()->json(compact('token'));
     }
     
-    public function getLogin()
+    public function logout(Request $request)
     {
-        return view('admin.login');
-    }
-    
-    public function postLogin(Request $request)
-    {
-        var_dump($request->all());
-        die();
+        try{
+            if(JWTAuth::invalidate())
+                return response()->json(['success' => true]);
+            else
+                return esponse()->json(['success' => false, 'msg'   =>  'Ops. Something went wrong!']);
+        } catch(JWTException $ex) {
+            return response()->json(['success' => false, 'msg'  =>  $ex->getMessage()]);
+        }
     }
 }
