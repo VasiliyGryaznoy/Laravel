@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 
+use App\Services\UserService;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -11,6 +13,12 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
+    private $userService;
+    
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     
     public function authenticate(Request $request)
     {
@@ -44,6 +52,24 @@ class AuthController extends Controller
     
     public function signup(Request $request)
     {
-        var_dump($request->all());
+        $validator = Validator::make($request->all(), [
+            'email'     =>  'required|email',
+            'password'  =>  'required',
+            'name'  =>  'required',
+        ]);
+        if($validator->fails()) {
+            return response()->json([
+                'success'   =>  false,
+                'msg'       =>  $validator->errors()->first()
+            ]);
+        }
+        
+        if($this->userService->create($request->all()))
+            return response()->json(['success'   =>  true]);
+        else
+            return response()->json([
+                'success'   =>  false,
+                'msg'       =>  'Something went wrong!'
+            ]);
     }
 }
