@@ -4,6 +4,7 @@
     angular
         .module('adminApp')
         .config(function(stateHelperProvider, $urlRouterProvider, $authProvider) {
+        $authProvider.storageType = 'localStorage';
         $authProvider.loginUrl = '/api/authenticate';
             stateHelperProvider
                 .state({
@@ -12,6 +13,10 @@
                     templateUrl: '../views/admin/auth.html',
                     controller: 'AuthCtrl',
                     controllerAs: 'vm',
+                })
+                .state({
+                    name: 'logout',
+                    url: '/logout'
                 })
                 .state({
                     name: 'dashboard',

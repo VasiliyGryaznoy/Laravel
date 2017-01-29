@@ -7,13 +7,12 @@
 
     function run($rootScope, $auth, $state, authService, statesWithoutAuthenticated) {
 
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+        $rootScope.$on('$stateChangeStart', changeStateHandler);
 
+        function changeStateHandler(event, toState, toParams) {
             if(!$auth.isAuthenticated() && statesWithoutAuthenticated.indexOf(toState.name) === -1) {
-                $rootScope.showNavigation = false;
-                authService.logout();
                 event.preventDefault();
-                $state.go('login');
+                authService.logout();
             } else if($auth.isAuthenticated() && statesWithoutAuthenticated.indexOf(toState.name) !== -1) {
                 $rootScope.showNavigation = true;
                 event.preventDefault();
@@ -21,6 +20,11 @@
             } else if($auth.isAuthenticated()) {
                 $rootScope.showNavigation = true;
             }
-        });
+
+            if(toState.name === 'logout') {
+                event.preventDefault();
+                authService.logout();
+            }
+        }
     }
 })();

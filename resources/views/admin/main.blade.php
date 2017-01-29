@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="adminApp" ng-cloack>
 
 <head>
 
@@ -45,46 +45,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-resource.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/satellizer/0.14.1/satellizer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.min.js"></script>
-    <script src="<% url('admin-app/libs.js') %>"></script>
-    <script src="<% url('admin-app/app.js') %>"></script>
-
 </head>
 
-<body ng-app="adminApp">
+<body>
     <div id="wrapper">
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-if="showNavigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" ui-sref="dashboard">SB Admin v2.0</a>
-            </div>
-            <!-- /.navbar-header -->
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li>
-                            <a ui-sref="dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a ui-sref="users"><i class="fa fa-group"></i> Users</a>
-                        </li>
-
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
-            <!-- /.navbar-static-side -->
-        </nav>
+        <ng-include data-ng-if="showNavigation" src="'/views/admin/navbar.html'"></ng-include>
 
         <div id="page-wrapper" ng-class="{'hide-navigation': !showNavigation}">
             <div ui-view></div>
         </div>
     </div>
+
+    <!--Angular app-->
+    <script src="<% url('admin-app/libs.js') %>"></script>
+    <script src="<% url('admin-app/app.js') %>"></script>
 </body>
 
 </html>
