@@ -41,4 +41,9 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'msg'  =>  $ex->getMessage()]);
         }
     }
+    
+    public function signup(Request $request)
+    {
+        var_dump($request->all());
+    }
 }

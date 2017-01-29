@@ -3,5 +3,5 @@
 
     angular
         .module('adminApp')
-        .constant('statesWithoutAuthenticated', ['login']);
+        .constant('statesWithoutAuthenticated', ['login', 'signup']);
 })();

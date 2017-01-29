@@ -6,12 +6,21 @@
         .config(function(stateHelperProvider, $urlRouterProvider, $authProvider) {
         $authProvider.storageType = 'localStorage';
         $authProvider.loginUrl = '/api/authenticate';
+        $authProvider.signupUrl = '/api/signup';
+
             stateHelperProvider
                 .state({
                     name: 'login',
                     url: '/login',
-                    templateUrl: '../views/admin/auth.html',
-                    controller: 'AuthCtrl',
+                    templateUrl: '../views/admin/login.html',
+                    controller: 'LoginCtrl',
+                    controllerAs: 'vm',
+                })
+                .state({
+                    name: 'signup',
+                    url: '/signup',
+                    templateUrl: '../views/admin/signup.html',
+                    controller: 'SignupCtrl',
                     controllerAs: 'vm',
                 })
                 .state({

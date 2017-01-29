@@ -3,11 +3,11 @@
 
     angular
         .module('adminApp')
-        .controller('AuthCtrl', AuthCtrl);
+        .controller('LoginCtrl', LoginCtrl);
 
-    AuthCtrl.$inject = ['$auth', '$state'];
+    LoginCtrl.$inject = ['$auth', '$state'];
 
-    function AuthCtrl($auth, $state) {
+    function LoginCtrl($auth, $state) {
         var vm = this;
 
         vm.login = login;
