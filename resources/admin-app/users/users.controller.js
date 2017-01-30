@@ -3,10 +3,10 @@
 
     angular
         .module('adminApp')
-        .controller('UsersCtrl', UsersCtrl);
+        .controller('UsersController', UsersController);
 
     /* @ngInject */
-    function UsersCtrl(users) {
+    function UsersController(users) {
         var vm = this;
 
         vm.users = users;

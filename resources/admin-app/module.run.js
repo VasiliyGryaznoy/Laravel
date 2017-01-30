@@ -9,6 +9,8 @@
 
         $rootScope.$on('$stateChangeStart', changeStateHandler);
 
+        $rootScope.logout = logout;
+
         function changeStateHandler(event, toState, toParams) {
             if(!$auth.isAuthenticated() && statesWithoutAuthenticated.indexOf(toState.name) === -1) {
                 event.preventDefault();
@@ -20,11 +22,10 @@
             } else if($auth.isAuthenticated()) {
                 $rootScope.showNavigation = true;
             }
+        }
 
-            if(toState.name === 'logout') {
-                event.preventDefault();
-                authService.logout();
-            }
+        function logout(){
+            authService.logout(true);
         }
     }
 })();

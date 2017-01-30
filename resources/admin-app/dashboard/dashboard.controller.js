@@ -3,11 +3,10 @@
 
     angular
         .module('adminApp')
-        .controller('DashboardCtrl', DashboardCtrl);
+        .controller('DashboardController', DashboardController);
 
-    DashboardCtrl.$inject = [];
-
-    function DashboardCtrl() {
+    /* @ngInject */
+    function DashboardController() {
         var vm = this;
 
         vm.hello = 'Hi there!';

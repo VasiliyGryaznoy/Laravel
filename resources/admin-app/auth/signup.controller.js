@@ -3,21 +3,16 @@
 
     angular
         .module('adminApp')
-        .controller('SignupCtrl', SignupCtrl);
+        .controller('SignupController', SignupController);
 
     /* @ngInject */
-    function SignupCtrl(
-        $auth,
-        $state,
-        $scope,
-        $validation
-    ) {
+    function SignupController($auth, $state, $scope, $validation) {
         var vm = this;
 
         vm.credentials = {
-            'name': '',
-            'email': '',
-            'password': ''
+            name: undefined,
+            email: undefined,
+            password: undefined
         };
 
         vm.signup = signup;
