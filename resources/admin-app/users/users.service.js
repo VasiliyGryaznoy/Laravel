@@ -8,12 +8,14 @@
     /* @ngInject */
     function usersService($resource) {
 
-        var User = $resource('/api/users', {}, {
-            update: {method: 'PUT'}
+        var User = $resource('/users', {}, {
+            update: {method: 'PUT'},
+            get: {url: '/users/:id'}
         });
 
         return {
-            all: all
+            all: all,
+            getCurrentUser: getCurrentUser
         };
 
 
@@ -21,6 +23,10 @@
 
         function all() {
             return User.query({}).$promise;
+        }
+
+        function getCurrentUser() {
+            return User.get({id: -1}).$promise;
         }
     }
 })();

@@ -8,6 +8,9 @@
     function httpInterceptor($q) {
         return {
             'request': function(config) {
+                if(config.url.indexOf('.html') === -1)
+                    config.url = '/api' + config.url;
+
                 return config;
             },
 

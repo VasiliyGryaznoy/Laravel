@@ -12,4 +12,9 @@ class UsersController extends Controller
     {
         return User::all();
     }
+    
+    public function show()
+    {
+        return auth()->user();
+    }
 }

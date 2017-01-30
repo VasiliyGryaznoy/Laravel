@@ -5,22 +5,27 @@
         .module('adminApp')
         .run(run);
 
-    function run($rootScope, $auth, $state, authService, statesWithoutAuthenticated) {
+    function run($rootScope, $auth, $state, authService, statesWithoutAuthenticated, $urlRouter) {
 
+        console.log($urlRouter);
         $rootScope.$on('$stateChangeStart', changeStateHandler);
 
         $rootScope.logout = logout;
 
+
+
         function changeStateHandler(event, toState, toParams) {
+            //TODO.
+            if($auth.isAuthenticated() && $rootScope.user === undefined) {
+                authService.loadUserData();
+            }
+
             if(!$auth.isAuthenticated() && statesWithoutAuthenticated.indexOf(toState.name) === -1) {
                 event.preventDefault();
                 authService.logout();
             } else if($auth.isAuthenticated() && statesWithoutAuthenticated.indexOf(toState.name) !== -1) {
-                $rootScope.showNavigation = true;
                 event.preventDefault();
                 $state.go('dashboard');
-            } else if($auth.isAuthenticated()) {
-                $rootScope.showNavigation = true;
             }
         }
 

@@ -19,9 +19,9 @@
 
 <body>
     <div id="wrapper">
-        <ng-include data-ng-if="showNavigation" src="'/views/admin/navbar.html'"></ng-include>
+        <ng-include data-ng-if="user" src="'/views/admin/navbar.html'"></ng-include>
 
-        <div id="page-wrapper" ng-class="{'hide-navigation': !showNavigation}">
+        <div id="page-wrapper" ng-class="{'hide-navigation': !user}">
             <div ui-view></div>
         </div>
     </div>
