@@ -5,15 +5,22 @@
         .module('adminApp')
         .service('usersService', usersService);
 
+    /* @ngInject */
     function usersService($resource) {
+
         var User = $resource('/api/users', {}, {
             update: {method: 'PUT'}
         });
 
         return {
-            all: function(){
-                return User.query({}).$promise;
-            }
+            all: all
         };
+
+
+
+
+        function all() {
+            return User.query({}).$promise;
+        }
     }
 })();

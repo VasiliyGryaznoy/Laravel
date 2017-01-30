@@ -8,10 +8,10 @@
     function authService($http, $auth, $state, $rootScope) {
         return {
             logout: function(){
-                $auth.removeToken();
                 return $http.post('/api/logout').then(function(result){
-                    $state.go('login');
                     $rootScope.showNavigation = false;
+                    $auth.removeToken();
+                    $state.go('login');
                 });
             }
         };

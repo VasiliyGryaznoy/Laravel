@@ -5,21 +5,10 @@
         .module('adminApp')
         .controller('UsersCtrl', UsersCtrl);
 
-    UsersCtrl.$inject = ['usersService'];
-
-    function UsersCtrl(usersService) {
+    /* @ngInject */
+    function UsersCtrl(users) {
         var vm = this;
 
-        vm.users = [];
-
-        init();
-
-        function init(){
-            usersService.all().then(function(result){
-                vm.users = result;
-            }).catch(function(err){
-                console.log(err);
-            });
-        }
+        vm.users = users;
     }
 })();

@@ -39,7 +39,12 @@
                     url: '/users',
                     templateUrl: '../views/admin/users.html',
                     controller: 'UsersCtrl',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    resolve: {
+                        users: function(usersService){
+                            return usersService.all();
+                        }
+                    }
                 });
             $urlRouterProvider.otherwise('/login');
         });

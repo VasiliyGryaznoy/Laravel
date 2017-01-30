@@ -5,13 +5,7 @@
         .module('adminApp')
         .controller('SignupCtrl', SignupCtrl);
 
-    SignupCtrl.$inject = [
-        '$auth',
-        '$state',
-        '$scope',
-        '$validation'
-    ];
-
+    /* @ngInject */
     function SignupCtrl(
         $auth,
         $state,
