@@ -20,13 +20,8 @@
         
         function signup() {
             $auth.signup(vm.credentials).then(function(result) {
-                if(!result.data.success) {
-                    alert(result.data.msg);
-                } else {
-                    $auth.login(vm.credentials).then(function(data) {
-                        $state.go('dashboard', {});
-                    });
-                }
+                $auth.setToken(result.data.token);
+                $state.go('dashboard', {});
             }).catch(function(err){
                 console.log(err);
             });

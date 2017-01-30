@@ -7,10 +7,12 @@
     
     function httpInterceptor($q) {
         return {
+            'request': function(config) {
+                return config;
+            },
+
             'responseError': function(rejection) {
-                console.log('-----');
-                console.log(arguments);
-                console.log('-----');
+                //Show good alert
                 return $q.reject(rejection);
             }
         };
