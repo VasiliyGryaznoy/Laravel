@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Files;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Redirect;
 use Storage;
 
@@ -16,7 +17,14 @@ class FilesController extends Controller
      */
     public function index()
     {
-        //
+        $files = File::allFiles(storage_path('files'));
+    
+        foreach ($files as $key => $file) {
+            $path = explode('/', $file);
+            $files[$key] = $path[count($path) - 1];
+        }
+        
+        return view('files.list')->with('files', $files);
     }
 
     /**
@@ -38,7 +46,7 @@ class FilesController extends Controller
     public function store(Files $request)
     {
         $file = $request->file('file');
-        if(Storage::put('1/1.'.$file->getClientOriginalExtension(), file_get_contents($file->getRealPath()))) {
+        if(Storage::put('files/'.$file->getClientOriginalName(), file_get_contents($file->getRealPath()))) {
             return redirect()->back()
                 ->with('msg', 'Good!');
         } else {
@@ -55,7 +63,14 @@ class FilesController extends Controller
      */
     public function show($id)
     {
-        //
+        if(File::exists(storage_path('files/') . $id)) {
+            return response()
+                ->download(storage_path('files/') . $id);
+        } else {
+            return redirect()->back()
+                ->withErrors(['File not found!']);
+        }
+
     }
 
     /**
