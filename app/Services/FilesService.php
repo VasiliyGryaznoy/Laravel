@@ -20,12 +20,17 @@ class FilesService extends Service
        return $files;
    }
     
-    public function saveFile(Request $request)
+    public function saveFile(Request $request, $storage = 'local', $path = "files/")
     {
         $file = $request->file('file');
         $fileName = $file->getClientOriginalName();
         try{
-            Storage::put('files/'.$fileName, file_get_contents($file->getRealPath()));
+            if(!Storage::disk($storage)->put($path.$fileName, file_get_contents($file->getRealPath()))){
+                return [
+                    'result' => false,
+                    'msg'  =>  'Something went wrong!'
+                ];
+            }
         } catch(\Exception $ex) {
             return $this->handleSaveFileException($ex);
         }

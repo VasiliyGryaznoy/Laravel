@@ -18,4 +18,5 @@ Route::get('/', function () {
 
 //Route::group(['middleware' => 'jwt.auth'], function(){
     Route::resource('files', 'FilesController');
+    Route::resource('images', 'ImagesController');
 //});

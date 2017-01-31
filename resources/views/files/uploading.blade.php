@@ -79,6 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
+                    Files uploading
                     <form action="/files" method="POST" enctype="multipart/form-data">
                         <input type="hidden" value="{{csrf_token()}}" name="_token">
                         <input type="file" name="file" required>
