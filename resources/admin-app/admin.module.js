@@ -8,6 +8,7 @@
         'satellizer',
         'validation',
         'validation.rule',
-        'angularFileUpload'
+        'angularFileUpload',
+        'ngImgCrop'
     ]);
 })();

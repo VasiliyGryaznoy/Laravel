@@ -6,12 +6,17 @@
         .controller('ImagesController', ImagesController);
 
     /* @ngInject */
-    function ImagesController(FileUploader, $auth) {
+    function ImagesController(FileUploader, $auth, $scope) {
         var vm = this;
 
         vm.image = {
             full: undefined,
             cropped: undefined
+        };
+
+
+        vm.debug = function() {
+            console.log(vm.image);
         };
 
         vm.uploader = new FileUploader({

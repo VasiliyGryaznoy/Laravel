@@ -8,13 +8,19 @@
         <div class="form form-inline">
             <input type="file"
                    nv-file-select
+                   id="fileInput"
                    class="form-control"
                    uploader="vm.uploader">
         </div>
     </div>
-    <div ng-show="vm.image.full">
-        <img src="{{vm.image.full}}" alt="" height="380px" width="460px">
+    <div>
+        <div class="cropArea">
+            <img-crop image="vm.image.full" result-image="vm.image.cropped"></img-crop>
+        </div>
+        <div>Cropped Image:</div>
+        <div><img ng-src="{{vm.image.cropped}}" /></div>
     </div>
+    <button ng-click="vm.debug()">Debug</button>
 </div>
 
 <style>
@@ -24,5 +30,11 @@
 
     .image-item {
         margin-bottom: 10px;
+    }
+    .cropArea {
+        background: #E4E4E4;
+        overflow: hidden;
+        width:500px;
+        height:350px;
     }
 </style>
