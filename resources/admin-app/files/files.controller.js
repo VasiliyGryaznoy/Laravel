@@ -12,12 +12,6 @@
         vm.files = files;
         vm.uploadProgress = 0;
 
-        vm.downloadFile = downloadFile;
-        
-        function downloadFile() {
-            
-        }
-
         vm.uploader = new FileUploader({
             url: '/api/files',
             method: 'POST',
