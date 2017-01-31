@@ -49,6 +49,13 @@
                             return filesService.all();
                         }
                     }
+                })
+                .state({
+                    name: 'images',
+                    url: '/images',
+                    templateUrl: '/views/admin/images.html',
+                    controller: 'ImagesController',
+                    controllerAs: 'vm',                 //What the hell???
                 });
             $urlRouterProvider.otherwise('/login');
         });

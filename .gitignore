@@ -9,3 +9,5 @@ access.log
 error.log
 npm-debug.log
 public/admin-app
+storage/files
+public/users-images

@@ -21,6 +21,7 @@ Route::post('signup', 'Api\AuthController@signup');
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::resource('users', 'Api\UsersController', ['only' => ['index', 'show']]);
     Route::resource('files', 'Api\FilesController');
+    Route::resource('images', 'Api\ImagesController');
 });
 
 //Route::get('/user', function (Request $request) {

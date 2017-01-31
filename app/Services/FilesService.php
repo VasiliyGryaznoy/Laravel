@@ -8,9 +8,20 @@ use Storage;
 
 class FilesService extends Service
 {
-   public function getFiles()
+   public function getFiles($storage = 'local', $path = "files")
    {
-       $files = File::allFiles(storage_path('files'));
+       switch ($storage) {
+           case 'local':
+               $path = storage_path($path);
+               break;
+           case 'public':
+               $path = public_path($path);
+               break;
+           default:
+               return [];
+       }
+       
+       $files = File::allFiles($path);
     
        foreach ($files as $key => $file) {
            $path = explode('/', $file);

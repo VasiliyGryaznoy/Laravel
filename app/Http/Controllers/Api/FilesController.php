@@ -21,7 +21,7 @@ class FilesController extends Controller
         return response($this->filesService->getFiles());
     }
     
-    public function store(Request $request)
+    public function store(Files $request)
     {
         $saveResult = $this->filesService->saveFile($request);
         if($saveResult['result']) {
