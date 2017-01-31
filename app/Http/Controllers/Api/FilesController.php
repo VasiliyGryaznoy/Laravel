@@ -30,15 +30,4 @@ class FilesController extends Controller
             return response(['Something went wrong'], 500);
         }
     }
-    
-    public function show($id)
-    {
-        if(File::exists(storage_path('files/') . $id)) {
-            return response()
-                ->download(storage_path('files/') . $id);
-        } else {
-            return response([false]);
-        }
-        
-    }
 }

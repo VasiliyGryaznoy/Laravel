@@ -23,6 +23,6 @@ class Service
         Log::error($e->getMessage());
         Log::error($e->getTraceAsString());
     
-        return ['result' => false, 'msg'  =>  'Something went wrong!'];
+        return false;
     }
 }

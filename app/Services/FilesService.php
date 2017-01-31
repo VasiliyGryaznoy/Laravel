@@ -8,20 +8,12 @@ use Storage;
 
 class FilesService extends Service
 {
-   public function getFiles($storage = 'local', $path = "files")
+   public function getFiles($storage = null, $path = "files")
    {
-       switch ($storage) {
-           case 'local':
-               $path = storage_path($path);
-               break;
-           case 'public':
-               $path = public_path($path);
-               break;
-           default:
-               return [];
-       }
-       
-       $files = File::allFiles($path);
+       if($storage === null)
+           $files = Storage::allFiles($path);
+       else
+           $files = Storage::disk($storage)->allFiles($path);
     
        foreach ($files as $key => $file) {
            $path = explode('/', $file);
@@ -31,24 +23,30 @@ class FilesService extends Service
        return $files;
    }
     
-    public function saveFile(Request $request, $storage = 'local', $path = "files/")
+    public function saveFile(Request $request, $storage = null, $path = "files/")
     {
         $file = $request->file('file');
         $fileName = $file->getClientOriginalName();
+        
         try{
-            if(!Storage::disk($storage)->put($path.$fileName, file_get_contents($file->getRealPath()))){
+            if($storage === null)
+                $saveResult = Storage::put($path.$fileName, file_get_contents($file->getRealPath()));
+            else
+                $saveResult = Storage::disk($storage)->put($path.$fileName, file_get_contents($file->getRealPath()));
+            
+            if($saveResult){
                 return [
-                    'result' => false,
-                    'msg'  =>  'Something went wrong!'
+                    'result' => true,
+                    'fileName'  =>  $fileName
                 ];
             }
         } catch(\Exception $ex) {
-            return $this->handleSaveFileException($ex);
+            $this->handleSaveFileException($ex);
         }
-        
+    
         return [
-            'result' => true,
-            'fileName'  =>  $fileName
+            'result' => false,
+            'msg'  =>  'Something went wrong!'
         ];
     }
 }

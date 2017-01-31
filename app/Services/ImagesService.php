@@ -20,8 +20,7 @@ class ImagesService extends Service
     
             return ['result' => true, 'fileName' => $fileParth . $resizedName];
         } catch(\Exception $ex) {
-            $this->handleSaveFileException($ex);
-            return ['result' => false];
+            return ['result' => $this->handleSaveFileException($ex)];
         }
     }
     

@@ -64,8 +64,7 @@ class FilesController extends Controller
      */
     public function show($id)
     {
-        //Problem
-        if(File::exists(storage_path('files/') . $id)) {
+        if(Storage::exists('files/' . $id)) {
             return response()
                 ->download(storage_path('files/') . $id);
         } else {
