@@ -7,7 +7,6 @@
 
     function run($rootScope, $auth, $state, authService, statesWithoutAuthenticated, $urlRouter) {
 
-        console.log($urlRouter);
         $rootScope.$on('$stateChangeStart', changeStateHandler);
 
         $rootScope.logout = logout;

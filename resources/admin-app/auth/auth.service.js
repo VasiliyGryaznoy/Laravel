@@ -20,6 +20,9 @@
             loadUserData: function () {
                 usersService.getCurrentUser().then(function(result){
                     $rootScope.user = result;
+                }, function(err){
+                    console.log('Something went wrong');
+                    console.log(err);
                 });
             }
         };
