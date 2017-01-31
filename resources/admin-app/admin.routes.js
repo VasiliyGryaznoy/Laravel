@@ -31,10 +31,22 @@
                     url: '/users',
                     templateUrl: '/views/admin/users.html',
                     controller: 'UsersController',
-                    controllerAs: 'vm',
+                    controllerAs: 'vm',                 //What the hell???
                     resolve: {
                         users: function(usersService){
                             return usersService.all();
+                        }
+                    }
+                })
+                .state({
+                    name: 'files',
+                    url: '/files',
+                    templateUrl: '/views/admin/files.html',
+                    controller: 'FilesController',
+                    controllerAs: 'vm',                 //What the hell???
+                    resolve: {
+                        files: function(filesService){
+                            return filesService.all();
                         }
                     }
                 });

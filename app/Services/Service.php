@@ -17,4 +17,12 @@ class Service
         
         return false;
     }
+    
+    protected function handleSaveFileException(Exception $e)
+    {
+        Log::error($e->getMessage());
+        Log::error($e->getTraceAsString());
+    
+        return ['result' => false];
+    }
 }

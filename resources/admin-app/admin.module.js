@@ -7,6 +7,7 @@
         'ngResource',
         'satellizer',
         'validation',
-        'validation.rule'
+        'validation.rule',
+        'angularFileUpload'
     ]);
 })();

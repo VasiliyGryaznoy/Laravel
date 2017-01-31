@@ -81,7 +81,7 @@
                 <div class="title m-b-md">
                     <form action="/files" method="POST" enctype="multipart/form-data">
                         <input type="hidden" value="{{csrf_token()}}" name="_token">
-                        <input type="file" name="file">
+                        <input type="file" name="file" required>
                         <input type="submit" name="submit">
                     </form>
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Files;
+use App\Services\FilesService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Redirect;
@@ -10,6 +11,13 @@ use Storage;
 
 class FilesController extends Controller
 {
+    private $filesService;
+    
+    public function __construct(FilesService $filesService)
+    {
+        $this->filesService = $filesService;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -17,14 +25,7 @@ class FilesController extends Controller
      */
     public function index()
     {
-        $files = File::allFiles(storage_path('files'));
-    
-        foreach ($files as $key => $file) {
-            $path = explode('/', $file);
-            $files[$key] = $path[count($path) - 1];
-        }
-        
-        return view('files.list')->with('files', $files);
+        return view('files.list')->with('files', $this->filesService->getFiles());
     }
 
     /**
@@ -45,8 +46,8 @@ class FilesController extends Controller
      */
     public function store(Files $request)
     {
-        $file = $request->file('file');
-        if(Storage::put('files/'.$file->getClientOriginalName(), file_get_contents($file->getRealPath()))) {
+        $saveResult = $this->filesService->saveFile($request);
+        if($saveResult['result']) {
             return redirect()->back()
                 ->with('msg', 'Good!');
         } else {
