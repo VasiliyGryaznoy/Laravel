@@ -40,12 +40,12 @@ return [
     | been setup for each driver as an example of the required options.
     |
     */
-
+    
     'disks' => [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('.'),
         ],
 
         'public' => [

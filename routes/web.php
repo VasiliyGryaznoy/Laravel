@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+//Route::group(['middleware' => 'jwt.auth'], function(){
+    Route::resource('files', 'FilesController');
+//});
