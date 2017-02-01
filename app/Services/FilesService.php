@@ -23,10 +23,12 @@ class FilesService extends Service
        return $files;
    }
     
-    public function saveFile(Request $request, $storage = null, $path = "files/")
+    public function saveFile(Request $request, $storage = null, $path = "files/", $fileName = null)
     {
         $file = $request->file('file');
-        $fileName = $file->getClientOriginalName();
+        
+        if($fileName === null)
+            $fileName = $file->getClientOriginalName();
         
         try{
             if($storage === null)

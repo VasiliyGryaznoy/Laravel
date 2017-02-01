@@ -15,12 +15,12 @@
     </div>
     <div>
         <div class="cropArea">
-            <img-crop image="vm.image.full" result-image="vm.image.cropped"></img-crop>
+            <img-crop image="vm.image.full" area-type="square" result-image="vm.image.cropped"></img-crop>
         </div>
         <div>Cropped Image:</div>
         <div><img ng-src="{{vm.image.cropped}}" /></div>
     </div>
-    <button ng-click="vm.debug()">Debug</button>
+    <button class="btn btn-primary upload-cropped-btn" ng-click="vm.uploadCropped()">Upload cropped</button>
 </div>
 
 <style>
@@ -36,5 +36,12 @@
         overflow: hidden;
         width:500px;
         height:350px;
+        float: left;
+        margin: 10px;
     }
+
+    .upload-cropped-btn {
+        margin: 10px;
+    }
+
 </style>

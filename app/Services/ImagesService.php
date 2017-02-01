@@ -7,6 +7,13 @@ use Image;
 
 class ImagesService extends Service
 {
+    private $fileServ;
+    
+    public function __construct(FilesService $filesService)
+    {
+        $this->fileServ = $filesService;
+    }
+    
     public function resizeImage($filePath, $fileName, $with = 540, $height = 480)
     {
         $fileFullPath = public_path($filePath . $fileName);
@@ -50,6 +57,14 @@ class ImagesService extends Service
             Storage::disk('public')->move($tempImgPath, $storagePath);
         else
             Storage::disk('public')->delete($tempImgPath);
+    }
+    
+    public function saveCroppedImage($request, $filePath)
+    {
+        $file = $request->file('file');
+        $newFileName = $this->getCroppedName($file->getClientOriginalName());
+        
+        return $this->fileServ->saveFile($request, 'public', $filePath, $newFileName);
     }
     
     private function getResizedName($fileName)

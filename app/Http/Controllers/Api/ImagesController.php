@@ -25,19 +25,41 @@ class ImagesController extends Controller
     
     public function store(ImageRequest $request)
     {
+        $action = $request->input('action');
         $userId = auth()->user()->id;
-        $saveResult = $this->filesService->saveFile($request, 'public', "users-images/$userId/");
-        if($saveResult['result']) {
-            $filePath = 'users-images/'.auth()->user()->id . '/';
-            $resizeResult = $this->imgServ->resizeImage($filePath, $saveResult['fileName']);
+    
+        $filePath = "users-images/$userId/";
+        
+        switch ($action) {
+            case 'resize':
+                $saveResult = $this->filesService->saveFile($request, 'public', $filePath);
+                if(!$saveResult['result']) {
+                    return response(['Something went wrong(saving)'], 500);
+                }
+                
+                $resizeResult = $this->imgServ->resizeImage($filePath, $saveResult['fileName']);
             
-            if($resizeResult['result']) {
-                return response([
-                    'fileName' => $resizeResult['fileName']
-                ]);
-            }
+                if(!$resizeResult['result'])
+                    return response(['Something went wrong(resizing)'], 500);
+                else {
+                    $resultFileName = $filePath. $resizeResult['fileName'];
+                    break;
+                }
+            case 'cropp':
+                $resultSaveCropped = $this->imgServ->saveCroppedImage($request, $filePath);
+                
+                if(!$resultSaveCropped['result'])
+                    return response(['Something went wrong(cropp)'], 500);
+                else {
+                    $resultFileName = $filePath . $resultSaveCropped['fileName'];
+                    break;
+                }
+            default:
+                return response(["Action didn't select!"], 500);
         }
-            
-        return response(['Something went wrong'], 500);
+    
+        return response([
+            'fileName' => $resultFileName
+        ]);
     }
 }

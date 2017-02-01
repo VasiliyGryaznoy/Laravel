@@ -14,31 +14,64 @@
             cropped: undefined
         };
 
+        var isCropping = false;
 
-        vm.debug = function() {
-            console.log(vm.image);
-        };
+        vm.uploadCropped = uploadCropped;
+        
+        function uploadCropped() {
+            if(vm.uploader.queue.length === 0) {
+                alert('error loading cropped image!');
+                return;
+            }
+            var croppedFileName = vm.uploader.queue[0]._file.name.split('.');
+            croppedFileName = croppedFileName[0] + '_cropped.png';
+
+            vm.uploader.queue[0]._file = dataURItoBlob(vm.image.cropped);
+            vm.uploader.queue[0]._file.name = croppedFileName;
+            isCropping = true;
+            vm.uploader.queue[0].upload();
+        }
 
         vm.uploader = new FileUploader({
             url: '/api/images',
             method: 'POST',
             headers: {'Authorization': 'Bearer ' + $auth.getToken()},
-            removeAfterUpload: true,
             onError: function(){
                 console.log('onError');
                 console.log(arguments);
                 console.log('-------');
             },
             onSuccessItem: function (item, result) {
-                vm.image.full = result.fileName;
+                if(isCropping) {
+                    vm.uploader.clearQueue();
+                    isCropping = false;
+                }
+                else {
+                    vm.image.cropped = '';
+                    vm.image.full = result.fileName;
+                }
+                alert('Success!');
             },
             filters: [ ], //Here can be something
             onAfterAddingFile: function(item){
                 item.upload();
             },
             onBeforeUploadItem: function(item){
-                item.formData.push({'file_alias': 'file'});
+                if(isCropping)
+                    item.formData.push({'file_alias': 'file', 'action': 'cropp'});
+                else
+                    item.formData.push({'file_alias': 'file', 'action': 'resize'});
             },
         });
+
+        function dataURItoBlob(dataURI) {
+            var binary = atob(dataURI.split(',')[1]);
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            var array = [];
+            for(var i = 0; i < binary.length; i++) {
+                array.push(binary.charCodeAt(i));
+            }
+            return new Blob([new Uint8Array(array)], {type: mimeString});
+        }
     }
 })();
