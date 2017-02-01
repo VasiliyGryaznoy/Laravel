@@ -25,7 +25,8 @@ class ImagesService extends Service
             $img = Image::make($fileFullPath);
             $img->resize($with, $height);
             
-            $this->saveImageInStorage($img, $resizedName, $resizedPath);
+            if(!Storage::disk('public')->put($resizedPath, $img->stream()->__toString()))
+                throw new \Exception('Something went wrong!');
         } catch(\Exception $ex) {
             return $this->handleSaveFileException($ex);
         }
@@ -42,31 +43,14 @@ class ImagesService extends Service
         try {
             $img = Image::make($fileFullPath);
             $img->crop(100, 100, 25, 25);
-            $this->saveImageInStorage($img, $croppedName, $croppedPath);
+            
+            if(!Storage::disk('public')->put($croppedPath, $img->stream()->__toString()))
+                throw new \Exception('Something went wrong!');
         } catch(\Exception $ex) {
             return $this->handleSaveFileException($ex);
         }
     
         return $croppedName;
-    }
-    
-    private function saveImageInStorage($img, $resizedName, $storagePath)
-    {
-        $tempImgPath = 'temp-images/'.$resizedName;
-        $fullTempPath = public_path($tempImgPath);
-        
-        try {
-            $img->save($fullTempPath);
-            if(!Storage::disk('public')->exists($storagePath))
-                Storage::disk('public')->move($tempImgPath, $storagePath);
-            else
-                Storage::disk('public')->delete($tempImgPath);
-            
-        } catch (\Exception $ex) {
-            throw new Exception($ex->getMessage());
-        }
-        
-        return true;
     }
     
     public function saveCroppedImage($request, $filePath)
