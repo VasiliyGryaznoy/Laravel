@@ -23,11 +23,10 @@ class FilesController extends Controller
     
     public function store(Files $request)
     {
-        $saveResult = $this->filesService->saveFile($request);
-        if($saveResult['result']) {
-            return response(['fileName' => $saveResult['fileName']]);
-        } else {
+        if(!$fileName = $this->filesService->saveFile($request)) {
             return response(['Something went wrong'], 500);
         }
+    
+        return response(['fileName' => $fileName]);
     }
 }

@@ -32,34 +32,27 @@ class ImagesController extends Controller
         
         switch ($action) {
             case 'resize':
-                $saveResult = $this->filesService->saveFile($request, 'public', $filePath);
-                if(!$saveResult['result']) {
+                if(!$fileName = $this->filesService->saveFile($request, 'public', $filePath)) {
                     return response(['Something went wrong(saving)'], 500);
                 }
-                
-                $resizeResult = $this->imgServ->resizeImage($filePath, $saveResult['fileName']);
             
-                if(!$resizeResult['result'])
+                if(!$resizeName = $this->imgServ->resizeImage($filePath, $fileName)) {
                     return response(['Something went wrong(resizing)'], 500);
-                else {
-                    $resultFileName = $filePath. $resizeResult['fileName'];
-                    break;
                 }
-            case 'cropp':
-                $resultSaveCropped = $this->imgServ->saveCroppedImage($request, $filePath);
                 
-                if(!$resultSaveCropped['result'])
+                $resultFileName = $filePath. $resizeName;
+                break;
+            case 'cropp':
+                if(!$fileCropped = $this->imgServ->saveCroppedImage($request, $filePath)) {
                     return response(['Something went wrong(cropp)'], 500);
-                else {
-                    $resultFileName = $filePath . $resultSaveCropped['fileName'];
-                    break;
                 }
+                
+                $resultFileName = $filePath . $fileCropped;
+                break;
             default:
                 return response(["Action didn't select!"], 500);
         }
     
-        return response([
-            'fileName' => $resultFileName
-        ]);
+        return response(['fileName' => $resultFileName]);
     }
 }
