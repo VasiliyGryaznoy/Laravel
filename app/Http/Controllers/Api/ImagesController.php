@@ -31,8 +31,7 @@ class ImagesController extends Controller
             $filePath = 'users-images/'.auth()->user()->id . '/';
             $resizeResult = $this->imgServ->resizeImage($filePath, $saveResult['fileName']);
             
-            if($resizeResult['result'])
-            {
+            if($resizeResult['result']) {
                 return response([
                     'fileName' => $resizeResult['fileName']
                 ]);

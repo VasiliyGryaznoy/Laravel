@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Image;
+use App\Http\Requests\ImageRequest;
 use App\Services\FilesService;
+use App\Services\ImagesService;
 use Illuminate\Http\Request;
 
 class ImagesController extends Controller
 {
     private $filesService;
+    private $imgServ;
     
-    public function __construct(FilesService $filesService)
+    public function __construct(FilesService $filesService, ImagesService $imgServ)
     {
         $this->filesService = $filesService;
+        $this->imgServ = $imgServ;
     }
     
     /**
@@ -41,16 +44,29 @@ class ImagesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Image $request)
+    public function store(ImageRequest $request)
     {
-        $saveResult = $this->filesService->saveFile($request, 'public', 'users-images/');
-        if($saveResult['result']) {
+        $saveResult = $this->filesService->saveFile($request, 'public', 'users-images2/');
+        if(!$saveResult['result']) {
             return redirect()->back()
-                ->with('msg', 'Good!');
-        } else {
-            return redirect()->back()
-                ->withErrors(['Something went wrong']);
+                ->withErrors(['Something went wrong(storing of image)']);
         }
+    
+        $resizeResult = $this->imgServ->resizeImage('users-images2/', $saveResult['fileName']);
+        if(!$resizeResult['result']) {
+            return redirect()->back()
+                ->withErrors(['Something went wrong(resizing of image)']);
+        }
+        
+        $croppResult = $this->imgServ->croppImage('users-images2/', $resizeResult['fileName']);
+    
+        if(!$croppResult['result']) {
+            return redirect()->back()
+                ->withErrors(['Something went wrong(cropping of image)']);
+        }
+        
+        return redirect()->back()
+            ->with('msg', 'Good!');
     }
 
     /**
