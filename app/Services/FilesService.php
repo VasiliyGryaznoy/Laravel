@@ -4,16 +4,14 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use League\Flysystem\Exception;
 use Storage;
 
 class FilesService extends Service
 {
    public function getFiles($storage = null, $path = "files")
    {
-       if($storage === null)
-           $files = Storage::allFiles($path);
-       else
-           $files = Storage::disk($storage)->allFiles($path);
+       $files = Storage::disk($storage)->allFiles($path);
     
        foreach ($files as $key => $file) {
            $path = explode('/', $file);
@@ -30,25 +28,13 @@ class FilesService extends Service
         if($fileName === null)
             $fileName = $file->getClientOriginalName();
         
-        try{
-            if($storage === null)
-                $saveResult = Storage::put($path.$fileName, file_get_contents($file->getRealPath()));
-            else
-                $saveResult = Storage::disk($storage)->put($path.$fileName, file_get_contents($file->getRealPath()));
-            
-            if($saveResult){
-                return [
-                    'result' => true,
-                    'fileName'  =>  $fileName
-                ];
-            }
+        try {
+            if(!Storage::disk($storage)->put($path.$fileName, file_get_contents($file->getRealPath())))
+                throw new Exception("File didn't save!");
         } catch(\Exception $ex) {
-            $this->handleSaveFileException($ex);
+            return $this->handleSaveFileException($ex);
         }
     
-        return [
-            'result' => false,
-            'msg'  =>  'Something went wrong!'
-        ];
+        return $fileName;
     }
 }

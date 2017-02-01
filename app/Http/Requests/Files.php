@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class Files extends FormRequest
 {
@@ -23,6 +24,7 @@ class Files extends FormRequest
      */
     public function rules()
     {
+        Log::debug($this->all());
         //How validate multiple files?
         return [
             'file' => 'required|max:2048|mimes:doc,docx,pdf,xls,xlsx'

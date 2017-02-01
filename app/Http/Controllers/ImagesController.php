@@ -46,21 +46,18 @@ class ImagesController extends Controller
      */
     public function store(ImageRequest $request)
     {
-        $saveResult = $this->filesService->saveFile($request, 'public', 'users-images2/');
-        if(!$saveResult['result']) {
+        if(!$fileName = $this->filesService->saveFile($request, 'public', 'users-images2/')) {
             return redirect()->back()
                 ->withErrors(['Something went wrong(storing of image)']);
         }
     
-        $resizeResult = $this->imgServ->resizeImage('users-images2/', $saveResult['fileName']);
-        if(!$resizeResult['result']) {
+        $resizeResult = $this->imgServ->resizeImage('users-images2/', $fileName);
+        if(!$resizedFileName = $resizeResult) {
             return redirect()->back()
                 ->withErrors(['Something went wrong(resizing of image)']);
         }
-        
-        $croppResult = $this->imgServ->croppImage('users-images2/', $resizeResult['fileName']);
     
-        if(!$croppResult['result']) {
+        if(!$croppFileName = $this->imgServ->croppImage('users-images2/', $resizedFileName)) {
             return redirect()->back()
                 ->withErrors(['Something went wrong(cropping of image)']);
         }

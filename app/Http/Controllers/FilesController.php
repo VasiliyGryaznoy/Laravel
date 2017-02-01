@@ -46,14 +46,14 @@ class FilesController extends Controller
      */
     public function store(Files $request)
     {
-        $saveResult = $this->filesService->saveFile($request);
-        if($saveResult['result']) {
-            return redirect()->back()
-                ->with('msg', 'Good!');
-        } else {
+        if(!$fileName = $this->filesService->saveFile($request)) {
             return redirect()->back()
                 ->withErrors(['Something went wrong']);
         }
+        
+        return redirect()->back()
+            ->with('msg', 'Good!');
+        
     }
 
     /**
@@ -64,14 +64,13 @@ class FilesController extends Controller
      */
     public function show($id)
     {
-        if(Storage::exists('files/' . $id)) {
-            return response()
-                ->download(storage_path('files/') . $id);
-        } else {
+        if(!Storage::exists('files/' . $id)) {
             return redirect()->back()
                 ->withErrors(['File not found!']);
         }
-
+    
+        return response()
+            ->download(storage_path('files/') . $id);
     }
 
     /**
