@@ -11,12 +11,12 @@ class ImagesService extends Service
     {
         $fileFullPath = public_path($filePath . $fileName);
         $resizedName = $this->getResizedName($fileName);
-        $resizedPath = public_path($filePath . $resizedName);
+        $resizedPath = $filePath . $resizedName;
         
         try {
             $img = Image::make($fileFullPath);
             $img->resize($with, $height);
-            $img->save($resizedPath);
+            $this->saveImageInStorage($img, $resizedName, $resizedPath);
     
             return ['result' => true, 'fileName' => $resizedName];
         } catch(\Exception $ex) {
@@ -28,17 +28,28 @@ class ImagesService extends Service
     {
         $fileFullPath = public_path($filePath . $fileName);
         $croppedName = $this->getCroppedName($fileName);
-        $croppedPath = public_path($filePath . $croppedName);
+        $croppedPath = $filePath . $croppedName;
     
         try {
             $img = Image::make($fileFullPath);
             $img->crop(100, 100, 25, 25);
-            $img->save($croppedPath);
+            $this->saveImageInStorage($img, $croppedName, $croppedPath);
     
             return ['result' => true, 'fileName' => $croppedName];
         } catch(\Exception $ex) {
             return ['result' => $this->handleSaveFileException($ex)];
         }
+    }
+    
+    private function saveImageInStorage($img, $resizedName, $storagePath)
+    {
+        $tempImgPath = 'temp-images/'.$resizedName;
+        $fullTempPath = public_path($tempImgPath);
+        $img->save($fullTempPath);
+        if(!Storage::disk('public')->exists($storagePath))
+            Storage::disk('public')->move($tempImgPath, $storagePath);
+        else
+            Storage::disk('public')->delete($tempImgPath);
     }
     
     private function getResizedName($fileName)
