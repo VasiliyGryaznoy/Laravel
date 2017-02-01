@@ -25,7 +25,7 @@ class ImagesController extends Controller
      */
     public function index()
     {
-        //
+        return view('images.list')->with('images', $this->filesService->getFiles('public', 'users-images2'));
     }
 
     /**
